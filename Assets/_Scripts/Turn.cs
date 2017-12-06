@@ -13,12 +13,11 @@ public class Turn : MonoBehaviour
 	[SerializeField] private bool _addSpace;
 	[SerializeField] private int _moveSpaces;
 	[SerializeField] private string _difficulty;
+	[SerializeField] private bool _difficultySelected;
 	
-	public string Difficulty
-	{
-		get { return _difficulty; }
-	}
-
+	public bool Answered{ get { return _answered; }}
+	public string Difficulty{ get { return _difficulty; }}
+	
 	private void Start()
 	{
 		_players = FindObjectsOfType(typeof(Move)) as Move[];
@@ -27,10 +26,28 @@ public class Turn : MonoBehaviour
 
 	private void Update()
 	{
+		if (Input.GetKeyDown(KeyCode.Alpha1) && _difficultySelected == false)
+		{
+			_difficulty = "easy";
+			_database.RestartCoroutine();
+			_difficultySelected = true;
+		}
+		else if (Input.GetKeyDown(KeyCode.Alpha2) && _difficultySelected == false)
+		{
+			_difficulty = "medium";
+			_database.RestartCoroutine();
+			_difficultySelected = true;
+		}
+		else if (Input.GetKeyDown(KeyCode.Alpha3) && _difficultySelected == false)
+		{
+			_difficulty = "hard";
+			_database.RestartCoroutine();
+			_difficultySelected = true;
+		}
+		
 		if (_answered)
 		{
 			_addSpace = true;
-			_database.RestartCoroutine();
 		}
 		
 		if (_addSpace)

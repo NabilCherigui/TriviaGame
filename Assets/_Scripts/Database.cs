@@ -29,22 +29,8 @@ public class Database : MonoBehaviour
 
     private void Update()
     {
-        url = "https://opentdb.com/api.php?amount=1&difficulty=" + _turn.Difficulty;
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (_answers.Count > 0)
-            {
-                _answers.Clear();   
-            }
-            _type = _result.results[0].type.Replace("&#039;","'").Replace("&quot;", @"""").Replace("&eacute;","é").Replace("&amp","&").Replace("&Aring;","Å").Replace("&uuml;","ü");
-            _question = _result.results[0].question.Replace("&#039;","'").Replace("&quot;", @"""").Replace("&eacute;","é").Replace("&amp","&").Replace("&Aring;","Å").Replace("&uuml;","ü");
-            _difficulty = _result.results[0].difficulty.Replace("&#039;","'").Replace("&quot;", @"""").Replace("&eacute;","é").Replace("&amp","&").Replace("&uuml;","ü");
-            _answers.Add("Correct" , _result.results[0].correct_answer.Replace("&#039;","'").Replace("&quot;", @"""").Replace("&eacute;","é").Replace("&amp","&").Replace("&uuml;","ü"));
-            for (var i = 0; i < _result.results[0].incorrect_answers.Length; i++)
-            {
-                _answers.Add("Incorrect" + i, _result.results[0].incorrect_answers[i].Replace("&#039;","'").Replace("&quot;", @"""").Replace("&eacute;","é").Replace("&amp","&").Replace("&uuml;","ü"));
-            }
-        }
+        print(_turn.Difficulty);
+        GetData();
     }
 
     [Serializable]
@@ -68,6 +54,30 @@ public class Database : MonoBehaviour
     public void RestartCoroutine()
     {
         StopCoroutine(Start());
+        url = "https://opentdb.com/api.php?amount=1&difficulty=" + _turn.Difficulty;
         StartCoroutine(Start());
+    }
+
+    private void GetData()
+    {
+        if (!String.IsNullOrEmpty(_turn.Difficulty) && _turn.Answered == false)
+        {
+            print("it works");
+            
+            if (_answers.Count > 0)
+            {
+                _answers.Clear();   
+            }
+            
+            _type = _result.results[0].type.Replace("&#039;","'").Replace("&quot;", @"""").Replace("&eacute;","é").Replace("&amp","&").Replace("&Aring;","Å").Replace("&uuml;","ü");
+            _question = _result.results[0].question.Replace("&#039;","'").Replace("&quot;", @"""").Replace("&eacute;","é").Replace("&amp","&").Replace("&Aring;","Å").Replace("&uuml;","ü");
+            _difficulty = _result.results[0].difficulty.Replace("&#039;","'").Replace("&quot;", @"""").Replace("&eacute;","é").Replace("&amp","&").Replace("&Aring;","Å").Replace("&uuml;","ü");
+            _answers.Add("Correct" , _result.results[0].correct_answer.Replace("&#039;","'").Replace("&quot;", @"""").Replace("&eacute;","é").Replace("&amp","&").Replace("&uuml;","ü"));
+            
+            for (var i = 0; i < _result.results[0].incorrect_answers.Length; i++)
+            {
+                _answers.Add("Incorrect" + i, _result.results[0].incorrect_answers[i].Replace("&#039;","'").Replace("&quot;", @"""").Replace("&eacute;","é").Replace("&amp","&").Replace("&uuml;","ü"));
+            }   
+        }
     }
 }
